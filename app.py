@@ -23,7 +23,8 @@ def load_models():
   tfidf = joblib.load("tfidf_vectorizer.pkl")
   model = joblib.load("linearsvc_model.pkl")
   analyzer = SentimentIntensityAnalyzer()
-  stop_w = set(stopwords.words("english"))
+  kata_pengecualian = {'not', 'no', 'nor', 'neither', 'never'}
+  stop_w = set(stopwords.words("english")) - kata_pengecualian
   lemma = WordNetLemmatizer()
 
   return tfidf, model, analyzer, stop_w, lemma
@@ -81,11 +82,11 @@ if st.button("🔍 Analisis Sentimen", type="primary"):
     col1, col2 = st.columns(2)
     with col1:
       if pred == 1:
-        st.success("### 🟢 **POSITIF** (Positive)")
-        st.write("Penulis menyukai film ini.")
+        st.success("### 🟢 **Positive**")
+        st.write("Analisis model untuk ulasan ini berupa ulasan positif.")
       else:
-        st.error("### 🔴 **NEGATIF** (Negative)")
-        st.write("Penulis mengkritik/tidak menyukai film ini.")
+        st.error("### 🔴 **Negative**")
+        st.write("Analisis model untuk ulasan ini berupa ulasan negatif.")
 
     with col2:
       st.metric("Tingkat Keyakinan Model", f"{confidence * 100:.2f}%")
